@@ -19,11 +19,15 @@ const allowedUsers = [
 // 🎧 áudio
 const AUDIO_FILE = "./audio.mp3";
 
+// 🔍 DEBUG TOKEN
+console.log("TOKEN carregado:", process.env.TOKEN ? "SIM" : "NÃO");
+
+// evento quando o bot conecta
 client.once('ready', () => {
   console.log(`Bot logado como ${client.user.tag}`);
 });
 
-// 🎤 evento de voz
+// evento de voz
 client.on('voiceStateUpdate', (oldState, newState) => {
   if (!oldState.channel && newState.channel) {
     const userId = newState.id;
@@ -53,8 +57,10 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   }
 });
 
-// login
-client.login(process.env.TOKEN);
+// 🔐 LOGIN COM TRATAMENTO DE ERRO
+client.login(process.env.TOKEN).catch(err => {
+  console.error("ERRO AO LOGAR NO DISCORD:", err);
+});
 
 // 🔥 FIX DO RENDER (porta fake)
 require('http')
